@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: wordpress
+  name: wordpress
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: wordpress
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        service: wordpress
+    spec:
+      containers:
+        - name: wordpress
+          image: brycemclachlan/wordpress
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - mountPath: /var/www/
+              name: wp-content
+          env:
+            - name: WORDPRESS_CONFIG_EXTRA
+              value: "define('WP_HOME','https://api.blog.brycemclachlan.me'); define('WP_SITEURL','https://api.blog.brycemclachlan.me');"
+            - name: WORDPRESS_DB_NAME
+              value: db_name
+            - name: WORDPRESS_DB_PASSWORD
+              value: db_user_pass
+            - name: WORDPRESS_DB_USER
+              value: db_user_name
+            - name: WORDPRESS_EMAIL
+              value: wp_admin_email@gmail.com
+            - name: WORDPRESS_PASSWORD
+              value: wp_admin_password
+            - name: WORDPRESS_TITLE
+              value: wp_title
+            - name: WORDPRESS_USER
+              value: wp_admin_username
+            - name: WORDPRESS_DB_HOST
+              value: 127.0.0.1:3306
+        - name: db
+          image: mariadb:10
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: wp-content
+          env:
+            - name: MYSQL_DATABASE
+              value: db_name
+            - name: MYSQL_PASSWORD
+              value: db_user_pass
+            - name: MYSQL_USER
+              value: db_user_name
+            - name: MYSQL_ROOT_PASSWORD
+              value: mysql_root_pass
+      restartPolicy: Always
+      volumes:
+        - name: wp-content
+          persistentVolumeClaim:
+            claimName: wp-content
