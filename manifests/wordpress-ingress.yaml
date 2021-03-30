@@ -14,21 +14,7 @@ spec:
     - host: api.blog.brycemclachlan.me
       http:
         paths:
-          - path: /graphql/
-            pathType: Prefix
-            backend:
-              service:
-                name: wordpress
-                port:
-                  number: 80
-          - path: /wp-admin/
-            pathType: Prefix
-            backend:
-              service:
-                name: wordpress
-                port:
-                  number: 80
-          - path: /wp/v2/
+          - path: /
             pathType: Prefix
             backend:
               service:
