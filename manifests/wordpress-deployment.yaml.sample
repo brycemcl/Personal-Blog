@@ -26,7 +26,7 @@ spec:
               name: wp-content
           env:
             - name: WORDPRESS_CONFIG_EXTRA
-              value: "define('WP_HOME','https://api.blog.brycemclachlan.me'); define('WP_SITEURL','https://api.blog.brycemclachlan.me');"
+              value: "define('WP_HOME','https://api.blog.brycemclachlan.me'); define('WP_SITEURL','https://api.blog.brycemclachlan.me'); define( 'HEADLESS_MODE_CLIENT_URL', 'https://api.blog.brycemclachlan.me' );"
             - name: WORDPRESS_DB_NAME
               value: db_name
             - name: WORDPRESS_DB_PASSWORD
